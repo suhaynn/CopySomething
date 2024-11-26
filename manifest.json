@@ -3,7 +3,7 @@
   "name": "CopySomething",
   "author": "suhaynn",
   "version": "1.0",
-  "description": "一个用来快速提取空间测绘引擎数据的插件 By 南阳理工学院矛与盾社团 suhaynn & 配合Fofa Shodan使用效果更佳",
+  "description": "一个用来快速提取空间测绘引擎数据的插件 By suhaynn & 配合Fofa Shodan使用效果更佳",
   "permissions": [
     "activeTab",
     "storage",
