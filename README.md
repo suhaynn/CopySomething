@@ -5,6 +5,7 @@
 
 quake和鹰图正在开发中
 
-![image](https://github.com/user-attachments/assets/f99bb6c9-4580-4e91-a797-48fe26101895)
+![image](https://github.com/user-attachments/assets/f11b6552-2215-4482-8127-c744f3f07cf8)
 
-![image](https://github.com/user-attachments/assets/5d046275-f9fd-4a29-998a-482585f0dd5f)
+![image](https://github.com/user-attachments/assets/1b2deaa9-a9e5-45bb-b39b-e512a19eec52)
+
