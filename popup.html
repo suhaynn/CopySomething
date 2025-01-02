@@ -7,15 +7,51 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            width: 450px;
-            padding: 20px;
+            width: 700px; /* 设置宽度 */
+            padding: 10px;
             background-color: #f9f9f9;
             color: #333;
         }
-        h1 {
-            color: #4a90e2;
-            text-align: left;
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
         }
+
+        h1 {
+            font-size: 24px;
+            color: #4a90e2;
+        }
+
+        .top {
+            /* position: fixed; */
+            /* width: 100%; 使其宽度充满整个页面 */
+            background-color: #4a90e2; /* 蓝色背景 */
+            color: white; /* 字体颜色为白色 */
+            padding: 10px; /* 内边距 */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 添加阴影效果 */
+            z-index: 1000; /* 确保在其他元素之上 */
+            text-align: center; /* 文本居中对齐 */
+        }
+
+        .title {
+            font-size: 20px; /* 标题字体大小 */
+            margin: 0; /* 去掉默认边距 */
+        }
+
+        .author {
+            font-size: 15px;
+            color: #ddd; /* 将作者名字颜色设为浅灰色 */
+            text-align: right; /* 文本右对齐 */
+            margin-top: 5px; /* 上边距 */
+        }
+
+        .flex-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2px;
+        }
+
         pre {
             white-space: pre-wrap; 
             word-wrap: break-word; 
@@ -23,39 +59,47 @@
             overflow-y: auto; 
             background-color: #fff;
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 5px;
             border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px; /* 添加底部间距 */
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin-left: 10px;
+            flex-grow: 1;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
         }
+
         th, td {
             border: 1px solid #ccc;
-            padding: 10px;
+            padding: 8px;
             text-align: left;
         }
+
         th {
             background-color: #4a90e2;
             color: white;
             font-weight: bold;
-            cursor: pointer; /* 添加鼠标悬停指针效果 */
+            cursor: pointer; 
         }
+
         th:hover {
-            background-color: #357ABD; /* 悬停效果 */
+            background-color: #357ABD; 
         }
+
         td {
             background-color: #fff;
         }
+
         tr:nth-child(even) td {
-            background-color: #f2f2f2; /* 隔行变色 */
+            background-color: #f2f2f2; 
         }
+
         button {
             margin-top: 10px;
-            padding: 10px 15px;
+            padding: 8px 12px;
             background-color: #4a90e2;
             color: white;
             border: none;
@@ -63,31 +107,138 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
+
         button:hover {
-            background-color: #357ABD; /* 悬停效果 */
+            background-color: #357ABD; 
         }
+
         .button-container {
             display: flex;
-            justify-content: space-between; /* 按钮和反馈信息两端对齐 */
+            justify-content: space-between; 
             align-items: center;
             margin-top: 10px;
         }
+
         .feedback {
             color: green; 
             margin-left: 10px; 
             font-weight: bold;
-            flex-shrink: 0; /* 防止反馈文本缩小 */
+            flex-shrink: 0; 
+        }
+
+        .item {
+            display: flex;
+            flex-wrap: wrap; 
+            margin-bottom: 15px; 
+        }
+
+        .item-content {
+            width: 100px;
+            margin-right: 5px; 
+            background: #fff;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            padding: 10px; 
+            border: 1px solid #ccc; 
+        }
+
+        .info {
+            font-weight: bold; 
+            margin-left: 10px; 
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .info:hover {
+            background-color: #e6f7ff;  /* Light blue background on hover */
+            color: #0056b3;  /* Dark blue text on hover */
+            cursor: pointer;  /* Change cursor to pointer */
+            border-radius: 3px;  /* Slight rounding of corners */
         }
     </style>
 </head>
 <body>
-    <h1>当前域名</h1>
-    <div><pre id="domain">域名：</pre></div>
-    <button id="copySourceButton">复制源码</button> <!-- 添加复制源码按钮 -->
-    <div><pre id="sourceCode">正在获取源码...</pre></div>
+    <header>
+        
+        <div class="top">
+            <div class="title">CopySomethings</div>
+            <div class="author">By MYD-suhaynn</div>
+        </div>
+    </header>
+
+    <div class="flex-container">
+        <div>标题：</div>
+        <pre id="title">标题：</pre>
+    </div>
+
+    <div>资产归属：</div>
+    <div class="item">
+        <div class="item-content">
+            当前网站域名 
+            <span class="info" id="domain"></span>
+        </div>
+        <div class="item-content">
+            网站IP 
+            <span class="formDataIp item info" id="anotherIP">-</span>
+        </div>
+        <div class="item-content">
+            法定代表人 
+            <span class="info" id="legalPerson">张三</span>
+        </div>
+        <div class="item-content">
+            注册资金 
+            <span class="info" id="registeredCapital">100万</span>
+        </div>
+    </div>
+
+    <div>备案信息</div>
+    <div class="item">
+        <div class="item-content">
+            备案号 
+            <span class="info" id="recordNumber"> - </span>
+        </div>
+        <div class="item-content">
+            性质 
+            <span class="info" id="nature"> - </span>
+        </div>
+        <div class="item-content">
+            公司 
+            <span class="info" id="companyName"> - </span>
+        </div>
+        <div class="item-content">
+            审核时间 
+            <span class="info" id="auditTime"> - </span>
+        </div>
+    </div>
+
+    <div>公司信息</div>
+    <div class="item">
+        <div class="item-content">
+            公司地址 
+            <span class="info" id="companyAddress"> - </span>
+        </div>
+        <div class="item-content">
+            所属行业 
+            <span class="info" id="industry"> - </span>
+        </div>
+        <div class="item-content">
+            公司状态 
+            <span class="info" id="companyStatus"> - </span>
+        </div>
+        <div class="item-content">
+            人员规模 
+            <span class="info" id="companySize"> - </span>
+        </div>
+    </div>
+    
     <div class="button-container">
         <div class="feedback" id="feedback"></div>
     </div>
+    <button id="copySourceButton">复制源码</button>
+    <button id="getinfoButton">敏感信息提取</button>
+    
+    <div><pre id="sourceCode">正在获取源码...</pre></div>
     <table id="linkTable">
         <thead>
             <tr>
