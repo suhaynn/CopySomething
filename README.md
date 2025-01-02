@@ -14,6 +14,7 @@ quake和鹰图正在开发中（也不知道怎么开发，插件思路就是js�
 # 新增查询备案功能
 原插件superSearchPlus因为部分平台调整 导致部分查询已经失效，现在内部自用，停止维护了。
 又因为我平时每周任务需要查备案，就自己写了这个功能，很简陋且丑陋，希望师傅们帮我美化一下，我将不胜感激
-![image](https://github.com/user-attachments/assets/cf66146a-37e5-4598-b6d4-2307f6fbcd3f)
+![image](https://github.com/user-attachments/assets/8cf6315b-80dd-4ecc-a77d-63077a336243)
+
 
 
