@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            width: 700px; /* 设置宽度 */
+            width: 600px; /* 设置宽度 */
             padding: 10px;
             background-color: #f9f9f9;
             color: #333;
@@ -130,12 +130,13 @@
             display: flex;
             flex-wrap: wrap; 
             margin-bottom: 15px; 
+            justify-content: center; /* 水平居中对齐 */
         }
 
         .item-content {
             width: 100px;
             margin-right: 5px; 
-            background: #fff;
+            background: #a8caed;
             border-radius: 5px;
             display: flex;
             flex-direction: column;
@@ -146,15 +147,17 @@
 
         .info {
             font-weight: bold; 
+            justify-content: center; /* 水平居中对齐 */
+            /* background: #cbd2d8; */
             margin-left: 10px; 
             transition: background-color 0.3s, color 0.3s;
         }
 
         .info:hover {
-            background-color: #e6f7ff;  /* Light blue background on hover */
-            color: #0056b3;  /* Dark blue text on hover */
-            cursor: pointer;  /* Change cursor to pointer */
-            border-radius: 3px;  /* Slight rounding of corners */
+            background-color: #e6f7ff;  /* 鼠标悬停时的背景颜色 */
+            color: #0056b3;  /* 鼠标悬停时的文字颜色 */
+            cursor: pointer;  /* 鼠标悬停时光标变为手型 */
+            border-radius: 3px;  /* 稍微圆角 */
         }
     </style>
 </head>
@@ -162,7 +165,7 @@
     <header>
         
         <div class="top">
-            <div class="title">CopySomethings</div>
+            <div class="title">CopySomething</div>
             <div class="author">By MYD-suhaynn</div>
         </div>
     </header>
@@ -172,7 +175,7 @@
         <pre id="title">标题：</pre>
     </div>
 
-    <div>资产归属：</div>
+    <div>资产归属</div>
     <div class="item">
         <div class="item-content">
             当前网站域名 
@@ -180,7 +183,7 @@
         </div>
         <div class="item-content">
             网站IP 
-            <span class="formDataIp item info" id="anotherIP">-</span>
+            <span class="info" id="anotherIP">-</span>
         </div>
         <div class="item-content">
             法定代表人 
