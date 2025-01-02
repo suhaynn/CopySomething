@@ -7,11 +7,13 @@
 
 quake和鹰图正在开发中（也不知道怎么开发，插件思路就是js发包，使用选择器来匹配链接，没用任何技术含量哈，会的师傅希望帮帮我健全一下这个插件）
 
-![image](https://github.com/user-attachments/assets/f11b6552-2215-4482-8127-c744f3f07cf8)
+![image](https://github.com/user-attachments/assets/c9227519-159f-4aac-b6d2-009f5beccc1e)
+
 
 ![image](https://github.com/user-attachments/assets/1b2deaa9-a9e5-45bb-b39b-e512a19eec52)
 # 新增查询备案功能
 原插件superSearchPlus因为部分平台调整 导致部分查询已经失效，现在内部自用，停止维护了。
 又因为我平时每周任务需要查备案，就自己写了这个功能，很简陋且丑陋，希望师傅们帮我美化一下，我将不胜感激
-![image](https://github.com/user-attachments/assets/0a16938a-3924-4b16-a2e7-9d1f680a84b8)
+![image](https://github.com/user-attachments/assets/476b2a5b-d8ad-4061-9f8e-26c3e20f9858)
+
 
