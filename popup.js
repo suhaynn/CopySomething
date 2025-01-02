@@ -74,7 +74,7 @@ class App {
         fetch(url1, {
             method: 'GET',
             headers: {
-                'Cookie': 'userId=1' // 请求头部设置 Cookie
+                'Referer': 'https://www.aizhan.com/' // 添加 Referer 头
             }
         })
         .then(response => {
