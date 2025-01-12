@@ -8,7 +8,6 @@ class App {
         // 获取 DOM 元素
         this.domainElement = document.getElementById('domain');
         this.titleElement = document.getElementById('title');
-        this.sourceCodeElement = document.getElementById('sourceCode');
         this.linkTableBody = document.getElementById('linkTable').getElementsByTagName('tbody')[0];
         this.feedbackElement = document.getElementById('feedback');
         this.copySourceButton = document.getElementById('copySourceButton');
@@ -20,29 +19,39 @@ class App {
     }
 
     init() {
-        this.sourceCodeElement.textContent = '正在获取分析...'; // 显示获取源码的提示信息
-    
-        // 获取当前 tab 的 URL 并抓取源码
         chrome.tabs.query({ active: true, currentWindow: true })
             .then(async (tabs) => {
-                const url = tabs[0].url; // 获取当前 tab 的 URL
+                const tab = tabs[0];
+                const url = tab.url; // 获取当前 tab 的 URL
                 const domain = new URL(url).hostname; // 获取域名
-                const title = tabs[0].title; // 获取页面标题
+                const title = tab.title; // 获取页面标题
+    
                 this.domainElement.textContent = domain; // 显示域名
                 this.titleElement.textContent = title; // 显示页面标题
     
-                // 发起网络请求以获取源码
-                const response = await fetch(url); // 发起网络请求
-                if (!response.ok) {
-                    throw new Error('网络响应不是 OK，状态码: ' + response.status);
+                this.geticp(domain);// 获取 ICP 信息
+                // 获取页面的 HTML 源代码
+                try {
+                    const result = await chrome.scripting.executeScript({
+                        target: { tabId: tab.id },
+                        function: () => document.documentElement.outerHTML
+                    });
+    
+                    if (result && result[0]) {
+                        const sourceHTML = result[0].result; // 获取到的 HTML 源代码
+                        this.copySourceButton.addEventListener('click', () => this.copyelementId("sourceCode", true, sourceHTML));
+                        return this.processSourceCode(sourceHTML); // 处理源码
+                    }
+                } catch (error) {
+                    console.error('执行脚本时出错:', error);
+                    this.handleError(error);
                 }
-                const sourceHTML = await response.text(); // 返回源码文本
-                this.geticp(domain);
-                return this.processSourceCode(sourceHTML); // 处理获取到的源码
             })
             .catch(error => this.handleError(error)); // 处理可能出现的错误
+            
+    
         // 绑定复制源码按钮的点击事件
-        this.copySourceButton.addEventListener('click', () => this.copyelementId("sourceCode", true));
+        
         this.getinfoButton.addEventListener('click', () => this.extractSensitiveInfo(document));
         this.domainElement.addEventListener('click', () => this.copyelementId('domain'));
         this.titleElement.addEventListener('click', () => this.copyelementId('title'));
@@ -99,7 +108,7 @@ class App {
     
             console.log(items); // 打印更新后的 items 数组
     
-            // 遍历 items 数组，更新 HTML 元素内容
+            // 遍历 items 数组，更新 HTML 元素内容，公司备案
             items.forEach(item => {
                 const element = document.getElementById(item.label);
                 if (element) {
@@ -112,7 +121,8 @@ class App {
             return fetch(url2, {
                 method: 'GET',
                 headers: {
-                    'Cookie': 'userId=1' // 请求头部设置 Cookie
+                    // 'Cookie': 'userId=1' // 请求头部设置 Cookie
+                    'Referer': 'https://www.chinaz.com' // 添加 Referer 头
                 }
             });
         })
@@ -138,7 +148,7 @@ class App {
     
             console.log(seoItems); // 打印更新后的 seoItems 数组
     
-            // 遍历 seoItems 数组，更新 HTML 元素内容
+            // 遍历 seoItems 数组，更新 HTML 元素内容，网站IP
             seoItems.forEach(item => {
                 const element = document.getElementById(item.label);
                 if (element) {
@@ -155,9 +165,9 @@ class App {
     getSelectorMap() {
         return {
             'fofa.info': { // 针对 fofa.info 的选择器
-                "url": '.hsxa-host a',
+                "域名": '.hsxa-host a',
                 "IP": "a.hsxa-jump-a[style='display:none;']",
-                "PORT": "a.hsxa-port",
+                "PORT": ".hsxa-fr a.hsxa-port",
                 "标题": ".el-tooltip.hsxa-one-line.item",
             },
             'www.shodan.io': { // 针对 www.shodan.io 的选择器
@@ -165,10 +175,16 @@ class App {
                 'url': 'a.title.text-dark',
             },
             'quake.360.net': { // 针对 quake.360.net 的选择器
-                'url': 'span',
+                '域名': '.item-top-line .copy_btn',
+                'IP': 'span.port-line-right-item.ml-10.copy_btn',
+                'PORT': 'span.port.common-tag.margin-right8',
+                '标题': '.title-line span.ellipse-text',
             },
             'hunter.qianxin.com': { // 针对 hunter.qianxin.com 的选择器
-                '链接1': '.copy_btn span',
+                'IP':'.q-table__row .q-table_1_column_2.is-hidden.q-table__cell .q-popover-wrapper.content.can-click span.q-tooltip',
+                '域名': '.q-table__row .q-table_1_column_3.is-hidden.q-table__cell span.q-tooltip',
+                '端口': '.q-table__row .q-table_1_column_4.is-hidden.q-table__cell .q-popover__reference',
+                '标题': '.q-table__row .q-table_1_column_5.q-table__cell .q-popover__reference',
             },
         };
     }
@@ -262,7 +278,6 @@ class App {
     }
 
     processSourceCode(sourceHTML) {
-        this.sourceCodeElement.textContent = sourceHTML; // 显示源码
         const parser = new DOMParser(); // 创建 DOM 解析器
         const doc = parser.parseFromString(sourceHTML, 'text/html'); // 解析 HTML到doc
         const domain = this.domainElement.textContent; // 获取域名
@@ -271,7 +286,6 @@ class App {
         // 检查是否有选择器可用
         if (Object.keys(linkSelectors).length > 0) {
             this.populateTable(doc, linkSelectors); // 填充数据到表格
-            
         } else {
             console.log('helloworld'); // 输出 helloworld
             this.extractSensitiveInfo(doc); // 提取敏感信息
@@ -288,6 +302,7 @@ class App {
         for (const linkName in linkSelectors) {
             const selector = linkSelectors[linkName]; // 获取选择器,也就是键值
             const links = doc.querySelectorAll(selector); // 获取匹配的元素，也就是值
+            console.log(selector);
     
             // 如果找到了匹配的链接
             if (links.length > 0) {
@@ -398,18 +413,40 @@ class App {
                 this.feedbackElement.textContent = '复制失败！请检查权限设置。'; // 处理复制失败的情况
             });
     }
-    copyelementId(elementId, isSourceCode = false) {
+    //传入要被复制得元素id和flag值，flag值为true时为源码，false时为其他内容,sourceCode为源码内容,
+    copyelementId(elementId, isSourceCode = false, SourceCode = false) {
         const element = document.getElementById(elementId);
-        const text = element ? element.textContent : null; // 获取文本内容
+        let text; // 在函数顶部声明 text 变量
+    
+        if (isSourceCode) {
+            text = SourceCode; // 获取源码
+            console.log(elementId, isSourceCode, SourceCode);
+        } else {
+            text = element ? element.textContent : null; // 获取文本内容
+        }
+    
+        console.log(text); // 注意这里是 text，而不是 this.text
     
         if (text) {
             navigator.clipboard.writeText(text) // 复制到剪贴板
                 .then(() => {
+                    const sizeInBytes = new TextEncoder().encode(text).length; // 计算字节大小
+                    
+                    // 直接在这里进行格式化
+                    let sizeFormatted;
+                    if (sizeInBytes < 1024) {
+                        sizeFormatted = sizeInBytes + ' 字节'; // 小于 1 KB
+                    } else if (sizeInBytes < 1024 * 1024) {
+                        sizeFormatted = (sizeInBytes / 1024).toFixed(2) + ' KB'; // 小于 1 MB
+                    } else {
+                        sizeFormatted = (sizeInBytes / (1024 * 1024)).toFixed(2) + ' MB'; // MB
+                    }
+    
                     if (!isSourceCode) {
                         console.log(`已复制！${isSourceCode}`); // 打印复制的内容
                         this.feedbackElement.textContent = `已复制！${text}`; // 显示成功信息
                     } else {
-                        this.feedbackElement.textContent = '源码已复制！'; // 简化提示
+                        this.feedbackElement.textContent = `源码已复制！大小: ${sizeFormatted}`; // 显示源码大小
                         console.log(`已复制！${isSourceCode}`); // 打印复制的内容
                     }
                 })
@@ -490,6 +527,6 @@ updateResultsTable(results) {
     });
 }
     handleError(error) {
-        this.sourceCodeElement.textContent = '请求失败: ' + error.message; // 显示错误信息
+        this.feedbackElement.textContent = '请求失败: ' + error.message; // 显示错误信息
     }
 }
