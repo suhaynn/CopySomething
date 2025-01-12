@@ -2,9 +2,11 @@
   "manifest_version": 3,
   "name": "CopySomething",
   "author": "suhaynn",
-  "version": "1.0",
-  "description": "一个用来快速提取空间测绘引擎数据的插件 By suhaynn & 配合Fofa Shodan使用效果更佳",
+  "version": "1.4.0",
+  "description": "一个用来提取空间测绘引擎数据的插件 By suhaynn & 配合Fofa Shodan使用效果更佳",
   "permissions": [
+    "activeTab",
+    "scripting",
     "activeTab",
     "storage",
     "tabs",
@@ -14,9 +16,6 @@
     "http://*/*",
     "https://*/*"
   ],
-  "background": { 
-    "service_worker": "background.js"
-  },
   "action": {
     "default_popup": "popup.html",
     "default_title": "CopySomething",
@@ -26,12 +25,6 @@
       "128": "icons/icon128.png"
     }
   },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["script/content.js"]
-    }
-  ],
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
