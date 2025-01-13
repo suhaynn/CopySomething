@@ -16,6 +16,10 @@
     "http://*/*",
     "https://*/*"
   ],
+  "host_permissions": [
+    "https://icp.aizhan.com/*",
+    "https://seo.chinaz.com/*"
+  ],
   "action": {
     "default_popup": "popup.html",
     "default_title": "CopySomething",
