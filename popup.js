@@ -108,7 +108,7 @@ class App {
     
             console.log(items); // 打印更新后的 items 数组
     
-            // 遍历 items 数组，更新 HTML 元素内容，公司备案
+            // 遍历 items 数组，更新 HTML 元素内容
             items.forEach(item => {
                 const element = document.getElementById(item.label);
                 if (element) {
@@ -121,8 +121,7 @@ class App {
             return fetch(url2, {
                 method: 'GET',
                 headers: {
-                    // 'Cookie': 'userId=1' // 请求头部设置 Cookie
-                    'Referer': 'https://www.chinaz.com' // 添加 Referer 头
+                    'Cookie': 'userId=1' // 请求头部设置 Cookie
                 }
             });
         })
@@ -148,7 +147,7 @@ class App {
     
             console.log(seoItems); // 打印更新后的 seoItems 数组
     
-            // 遍历 seoItems 数组，更新 HTML 元素内容，网站IP
+            // 遍历 seoItems 数组，更新 HTML 元素内容
             seoItems.forEach(item => {
                 const element = document.getElementById(item.label);
                 if (element) {
